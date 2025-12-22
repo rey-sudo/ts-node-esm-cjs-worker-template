@@ -4,6 +4,12 @@ import { logger } from "../common/logger";
 export async function createJob1(queue: Queue) {
   await queue.add(
     "call-api",
+    { source: "initial" },
+    { removeOnComplete: true }
+  );
+
+  await queue.add(
+    "call-api",
     { source: "cron" },
     {
       repeat: {
