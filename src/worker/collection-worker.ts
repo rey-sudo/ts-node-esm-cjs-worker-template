@@ -3,7 +3,7 @@ import type Redis from "ioredis";
 import { logger } from "../common/logger.js";
 
 export function startDailyWorker(redis: Redis): Worker {
-  logger.info("⚙️ Configuring dailyWorker")
+  logger.info("⚙️ Configuring dailyWorker");
 
   const worker = new Worker(
     "daily-job",
@@ -24,6 +24,10 @@ export function startDailyWorker(redis: Redis): Worker {
     {
       connection: redis,
       concurrency: 1,
+      limiter: {
+        max: 1,
+        duration: 60_000, 
+      },
     }
   );
 

@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
 import { ERROR_EVENTS } from "./common/errors.js";
-import { registerCollectionJob } from "./jobs/collection-job.js";
+import { createJob1 } from "./jobs/job1.js";
 import { validateEnv } from "./lib/env.js";
 import { startRedis } from "./redis/redis.js";
 import { startDailyWorker } from "./worker/collection-worker.js";
+import { startDailyQueue } from "./queue/collection-queue.js";
 import { logger } from "./common/logger.js";
 
 dotenv.config({ path: ".env.development" });
@@ -14,6 +15,12 @@ const main = async () => {
 
     const env = validateEnv();
 
+    const redis = startRedis(env);
+
+    const worker = startDailyWorker(redis);
+
+    const queue = startDailyQueue(redis);
+
     ERROR_EVENTS.forEach((event: string) =>
       process.on(event, async (err) => {
         console.error(err);
@@ -21,11 +28,8 @@ const main = async () => {
         process.exit(1);
       })
     );
-    const redis = startRedis(env);
 
-    const worker = startDailyWorker(redis);
-
-    //await registerCollectionJob();
+    await createJob1(queue);
   } catch (err) {
     console.error(err);
     process.exit(1);

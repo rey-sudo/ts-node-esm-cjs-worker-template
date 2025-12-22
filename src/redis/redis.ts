@@ -2,13 +2,7 @@ import Redis from "ioredis";
 import type { Env } from "../lib/env.js";
 import { logger } from "../common/logger.js";
 
-export let redis: Redis | null = null;
-
-export function getRedis() {
-  if (redis) return redis;
-
-  throw new Error("aa")
-}
+let redis: Redis | null = null;
 
 export function startRedis(env: Env): Redis {
   if (redis) {

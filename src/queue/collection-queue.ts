@@ -1,7 +1,17 @@
 import { Queue } from "bullmq";
-import { getRedis } from "../redis/redis.js";
+import type Redis from "ioredis";
+
+let dailyQueue: Queue | null = null;
 
 
-export const dailyQueue = new Queue("daily-job", {
-  connection: getRedis(),
-});
+export function startDailyQueue(redis: Redis): Queue {
+  if (dailyQueue) {
+    return dailyQueue;
+  }
+
+  dailyQueue = new Queue("daily-job", {
+    connection: redis,
+  });
+
+  return dailyQueue;
+}
