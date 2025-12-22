@@ -7,7 +7,7 @@ import { startDailyWorker } from "./worker/collection-worker.js";
 import { startDailyQueue } from "./queue/collection-queue.js";
 import { logger } from "./common/logger.js";
 
-dotenv.config({ path: ".env.development" });
+dotenv.config({ path: ".env.local" });
 
 const main = async () => {
   try {
