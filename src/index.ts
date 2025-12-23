@@ -3,8 +3,8 @@ import { ERROR_EVENTS } from "./common/errors.js";
 import { createJob1 } from "./jobs/job1.js";
 import { validateEnv } from "./lib/env.js";
 import { startRedis } from "./redis/redis.js";
-import { startDailyWorker } from "./worker/collection-worker.js";
-import { startDailyQueue } from "./queue/collection-queue.js";
+import { startDailyWorker } from "./worker/daily-worker.js";
+import { startDailyQueue } from "./queue/daily-queue.js";
 import { logger } from "./common/logger.js";
 
 dotenv.config({ path: ".env.local" });
